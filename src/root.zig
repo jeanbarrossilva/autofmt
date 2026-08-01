@@ -53,6 +53,7 @@ pub const FileInclusion = enum {
 };
 pub const PathFilter = @import("core/path_filter.zig").PathFilter;
 pub const PathsView = @import("core/PathsView.zig");
+pub const slices = @import("core/slices.zig");
 pub const std = @import("std");
 
 pub fn run(

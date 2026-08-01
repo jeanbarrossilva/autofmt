@@ -54,8 +54,8 @@ pub fn main(init: std.process.Init) !void {
         var buffer: [4096]u8 = undefined;
         break :_ std.Io.File.stdout().writer(io, &buffer);
     };
-    const paths = @as([]const []const u8, @ptrCast(&input.positionals));
-    var non_blank_paths = try filterNotBlank(allocator, paths);
+    const paths: []const []const u8 = @ptrCast(&input.positionals);
+    var non_blank_paths = try autofmt.slices.filterNotBlank(allocator, paths);
     defer non_blank_paths.deinit(allocator);
     const path_filter: autofmt.PathFilter =
         if (non_blank_paths.items.len == 0)
@@ -83,20 +83,4 @@ pub fn main(init: std.process.Init) !void {
         path_filter,
         configuration_parsing_result.formatters(),
     );
-}
-
-fn filterNotBlank(
-    allocator: std.mem.Allocator,
-    strings: []const []const u8,
-) !std.ArrayList([]const u8) {
-    if (strings.len == 0)
-        return .empty;
-    var non_blank =
-        try std.ArrayList([]const u8).initCapacity(allocator, strings.len);
-    for (strings) |string| {
-        if (autofmt.configuration.strings.isBlank(string))
-            continue;
-        try non_blank.append(allocator, string);
-    }
-    return non_blank;
 }
