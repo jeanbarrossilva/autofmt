@@ -11,5 +11,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Configure Zig compiler
         uses: mlugg/setup-zig@v2
+        with:
+          use-cache: false
       - name: Test
         run: zig build test
