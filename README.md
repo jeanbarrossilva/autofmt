@@ -20,7 +20,7 @@
     <tbody>
       <tr>
         <td>Kotlin</td>
-        <td><code>ktfmt</code> <a href="https://ktlint.github.io/ktlint">[website]</a></td>
+        <td><code>ktlint</code> <a href="https://ktlint.github.io/ktlint">[website]</a></td>
       </tr>
       <tr>
         <td>Java</td>
