@@ -1,8 +1,12 @@
 <div align="center">
   <h1>autofmt</h1>
   <div>A configurable, multi-language file formatter.</div>
+  <br>
+  <a href="https://github.com/jeanbarrossilva/autofmt/actions/workflows/test.yml">
+    <img src="https://github.com/jeanbarrossilva/autofmt/actions/workflows/test.yml/badge.svg" />
+  </a>
 </div>
-<br/>
+<br>
 
 <mark>autofmt allows you to, in one go, format multiple files using a formatter of your choosing for each of them.</mark> This comes in handy when your project contains files written in various programming languages, where each of these files is formatted differently. In an Android project, for example, you may have:
 <div align="center">
