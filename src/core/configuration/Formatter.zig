@@ -67,7 +67,7 @@ fn validateExtensions(self: Self) Error!void {
     for (self.extensions) |extension| {
         if (extension.len <= 1 or extension[0] != extension_prefix)
             return Error.MalformedExtension;
-        for (extension[1..], 0..) |character, index|
+        for (extension[1..], 1..) |character, index|
             if (character == extension_prefix) {
                 if (extension[index - 1] == character)
                     return Error.MalformedExtension;
@@ -113,9 +113,9 @@ test "validate(): errors if extensions are missing" {
 }
 
 test "validate(): errors if extension is malformed" {
-    for (&.{ "", "z", "zig", ".zig..zon", "zig zon" }) |extension|
+    inline for (&.{ "", "z", "zig", ".zig..zon", "zig zon" }) |extension|
         try std.testing.expectError(
-            Self.Error.MalformedExtensions,
+            Self.Error.MalformedExtension,
             Self.validate(.{
                 .identifier = Self.zig.identifier,
                 .extensions = &.{extension},
@@ -138,7 +138,7 @@ test "validate(): errors if arguments are missing" {
 }
 
 test "validate(): errors if exclusion is blank" {
-    for (&.{ "", " " }) |excluded_path|
+    inline for (&.{ "", " " }) |excluded_path|
         try std.testing.expectError(Self.Error.BlankExclusion, Self.validate(.{
             .identifier = Self.zig.identifier,
             .extensions = Self.zig.extensions,

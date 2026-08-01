@@ -68,22 +68,28 @@ fn parseSource(
 
 test parseSource {
     omitting_exclusions: {
-        var result = try parseSource(std.testing.allocator,
-            \\{
+        const source =
+            \\[
             \\  {
             \\    "identifier": "zig",
-            \\    "arguments": ["zig", "fmt", "."],
+            \\    "arguments": ["zig", "fmt"],
             \\    "extensions": [".zig", ".zon"]
             \\ }
-            \\}
+            \\]
+        ;
+        var backing_source = try std.ArrayList(u8).initCapacity(
+            std.testing.allocator,
+            source.len,
         );
+        try backing_source.appendSlice(std.testing.allocator, source);
+        var result = try parseSource(std.testing.allocator, backing_source);
         defer result.deinit();
-        std.testing.expectEquals(
+        try std.testing.expectEqualDeep(
             &.{
-                .{
+                Formatter{
                     .identifier = "zig",
-                    .arguments = &.{ "zig", "fmt", "." },
-                    .extensions = &.{ ".zig", ".zon" },
+                    .arguments = &.{"zig", "fmt"},
+                    .extensions = &.{".zig", ".zon"},
                 },
             },
             result.formatters(),
@@ -91,24 +97,30 @@ test parseSource {
         break :omitting_exclusions;
     }
     specifying_exclusions: {
-        var result = try parseSource(std.testing.allocator,
-            \\{
+        const source =
+            \\[
             \\  {
             \\    "identifier": "zig",
-            \\    "arguments": ["zig", "fmt", "."],
+            \\    "arguments": ["zig", "fmt"],
             \\    "extensions": [".zig", ".zon"],
-            \\    "exclusions": ["src/main.zig"]
+            \\    "exclusions": ["/src/main.zig"]
             \\ }
-            \\}
+            \\]
+        ;
+        var backing_source = try std.ArrayList(u8).initCapacity(
+            std.testing.allocator,
+            source.len,
         );
+        try backing_source.appendSlice(std.testing.allocator, source);
+        var result = try parseSource(std.testing.allocator, backing_source);
         defer result.deinit();
-        std.testing.expectEquals(
+        try std.testing.expectEqualDeep(
             &.{
-                .{
+                Formatter{
                     .identifier = "zig",
-                    .arguments = &.{ "zig", "fmt", "." },
-                    .extensions = &.{ ".zig", ".zon" },
-                    .exclusions = &.{"src/main.zig"},
+                    .arguments = &.{"zig", "fmt"},
+                    .extensions = &.{".zig", ".zon"},
+                    .exclusions = &.{"/src/main.zig"},
                 },
             },
             result.formatters(),

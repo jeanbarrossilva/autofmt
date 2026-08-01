@@ -36,7 +36,7 @@ pub fn filterNotBlank(
 
 test filterNotBlank {
     var non_blank =
-        try filterNotBlank(std.testing.allocator, &.{"", ":)", " ", "  "});
+        try filterNotBlank(std.testing.allocator, &.{ "", ":)", " ", "  " });
     defer non_blank.deinit(std.testing.allocator);
     try std.testing.expectEqualSlices([]const u8, &.{":)"}, non_blank.items);
 }
